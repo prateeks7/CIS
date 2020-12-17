@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>
+CIS
+</title>
+</head>
+<body bgcolor="black">
+<center>
+<img src="C:\Users\prate\Downloads\istockphoto-913271512-612x612.jpg" height = "40%" width = "auto">
+</center>
+<div style="margin-top:5%;margin-left:-4%">
+<center>
+<p style="color:white;font-size:150%">Welcome To CIS</p>
+<br>
+<p style="color:white">Add Your First Stock</p>
+<form action="./CIS_Main.html"/>
+<input style="width:25%;" id="in1">
+<script>
+function store(){
+var in1 = document.getElementById("in1").value;
+localStorage.setItem("input1",in1);
+}
+</script>
+<button type="submit" onclick="store()">Show</button>
+</center>
+</div>
+</body>
+</html>
