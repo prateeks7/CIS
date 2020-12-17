@@ -96,14 +96,14 @@ fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-historical-d
                                                                                            .then(data => {
                                                                                             document.getElementById("sno1").innerHTML = "1.";
                                                                                             document.getElementById("name1").innerHTML = data.chart.result[0].meta.symbol;
-                                                                                           	document.getElementById("volume1").innerHTML = data.chart.result[0].indicators.quote[0].volume;
-                                                                                           	document.getElementById("open1").innerHTML = parseFloat(data.chart.result[0].indicators.quote[0].open).toFixed(2);
-                                                                                           	document.getElementById("close1").innerHTML = parseFloat(data.chart.result[0].indicators.quote[0].close).toFixed(2);
-                                                                                           	document.getElementById("high1").innerHTML = parseFloat(data.chart.result[0].indicators.quote[0].high).toFixed(2);
-                                                                                           	document.getElementById("low1").innerHTML = parseFloat(data.chart.result[0].indicators.quote[0].low).toFixed(2);
+                                                                                           	document.getElementById("volume1").innerHTML = data.chart.result[0].indicators.quote[0].volume.reduce((a, b) => a + b, 0);
+                                                                                           	document.getElementById("open1").innerHTML = parseFloat(data.chart.result[0].indicators.quote[0].open[374]).toFixed(2);
+                                                                                           	document.getElementById("close1").innerHTML = parseFloat(data.chart.result[0].indicators.quote[0].close[374]).toFixed(2);
+                                                                                           	document.getElementById("high1").innerHTML = parseFloat(data.chart.result[0].indicators.quote[0].high[374]).toFixed(2);
+                                                                                           	document.getElementById("low1").innerHTML = parseFloat(data.chart.result[0].indicators.quote[0].low[374]).toFixed(2);
 	
 	
-                                                                                           	var close1 = data.chart.result[0].indicators.quote[0].close;
+                                                                                           	var close1 = data.chart.result[0].indicators.quote[0].close[374];
 
                                                                                            	var change1 = parseFloat(close1-yesterday_close1).toFixed(2);
                                                                                            	if(change1 >= 0)
