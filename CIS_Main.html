@@ -23,146 +23,84 @@ fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-historical-d
 	
 })
 .then(data => {
+
+    console.log(data);
+     
 	document.getElementById("dayBeforeYesterday_volume1").innerHTML = data.prices[2].volume;
 	document.getElementById("dayBeforeYesterday_open1").innerHTML = parseFloat(data.prices[2].open).toFixed(2);
 	document.getElementById("dayBeforeYesterday_close1").innerHTML = parseFloat(data.prices[2].close).toFixed(2);
 	document.getElementById("dayBeforeYesterday_high1").innerHTML = parseFloat(data.prices[2].high).toFixed(2);
 	document.getElementById("dayBeforeYesterday_low1").innerHTML = parseFloat(data.prices[2].low).toFixed(2);
 	
-	var threeDaysBefore_close1 = data.prices[3].close;
-	var dayBeforeYesterday_close1 = data.prices[2].close;
 	
-	var dayBeforeYesterday_change1 = parseFloat(dayBeforeYesterday_close1-threeDaysBefore_close1).toFixed(2);
+	document.getElementById("yesterday_volume1").innerHTML = data.prices[1].volume;
+    document.getElementById("yesterday_open1").innerHTML = parseFloat(data.prices[1].open).toFixed(2);
+    document.getElementById("yesterday_close1").innerHTML = parseFloat(data.prices[1].close).toFixed(2);
+    document.getElementById("yesterday_high1").innerHTML = parseFloat(data.prices[1].high).toFixed(2);
+    document.getElementById("yesterday_low1").innerHTML = parseFloat(data.prices[1].low).toFixed(2);
 	
-	if(dayBeforeYesterday_change1 >= 0)
+	
+	
+	document.getElementById("sno1").innerHTML = "1.";
+    document.getElementById("name1").innerHTML = stock1;
+    document.getElementById("volume1").innerHTML = data.prices[0].volume;
+    document.getElementById("open1").innerHTML = parseFloat(data.prices[0].open).toFixed(2);
+    document.getElementById("close1").innerHTML = parseFloat(data.prices[0].close).toFixed(2);
+    document.getElementById("high1").innerHTML = parseFloat(data.prices[0].high).toFixed(2);
+    document.getElementById("low1").innerHTML = parseFloat(data.prices[0].low).toFixed(2);
+	
+	
+	
+	var threeDaysBefore_close = data.prices[3].close;
+	var dayBeforeYesterday_close = data.prices[2].close;
+	var dayBeforeYesterday_change = parseFloat(dayBeforeYesterday_close-threeDaysBefore_close).toFixed(2);
+	if(dayBeforeYesterday_change >= 0)
 	{  
 	   document.getElementById("dayBeforeYesterday_change1").style.color = "green";
-	   document.getElementById("dayBeforeYesterday_change1").innerHTML = dayBeforeYesterday_change1 + "&#9650" ;
+	   document.getElementById("dayBeforeYesterday_change1").innerHTML = dayBeforeYesterday_change + "&#9650" ;
 	}
 	else
 	{
 	   
 	   document.getElementById("dayBeforeYesterday_change1").style.color = "red";
-	   document.getElementById("dayBeforeYesterday_change1").innerHTML = dayBeforeYesterday_change1 + "&#9660" ;
+	   document.getElementById("dayBeforeYesterday_change1").innerHTML = dayBeforeYesterday_change + "&#9660" ;
 	}	
 	
+	var yesterday_close = data.prices[1].close;
 	
-	
-	
-	
-	
-//{{...........................................................................yesterday.................................................................................................}}	
-                                        	
-											
-											
-											
-																
-											fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-historical-data?symbol="+stock1+"&region=IN", {
-                                        		"method": "GET",
-                                        		"headers": {
-                                        			"x-rapidapi-key": "76f08c99bemsh726d64bdb524ae1p124b4cjsn61e1b8b05f4d",
-                                        			"x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com"
-                                        		}
-                                        	})
-                                        	.then(response => {
-                                        		return response.json();
-	
-                                        	})
-                                        	.then(data => {
-                                        		document.getElementById("yesterday_volume1").innerHTML = data.prices[1].volume;
-                                        		document.getElementById("yesterday_open1").innerHTML = parseFloat(data.prices[1].open).toFixed(2);
-                                        		document.getElementById("yesterday_close1").innerHTML = parseFloat(data.prices[1].close).toFixed(2);
-                                        		document.getElementById("yesterday_high1").innerHTML = parseFloat(data.prices[1].high).toFixed(2);
-                                        		document.getElementById("yesterday_low1").innerHTML = parseFloat(data.prices[1].low).toFixed(2);
-	
-                                        		var yesterday_close1 = data.prices[1].close;
-												
-												
-												
-//{{{...................................................................................................................................current..................................................................................................}}}	
-												
-	
-                                                                                           fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1m&symbol="+stock1+"&range=1d&region=IN", {
-                                                                                           	"method": "GET",
-                                                                                           	"headers": {
-                                                                                           		"x-rapidapi-key": "76f08c99bemsh726d64bdb524ae1p124b4cjsn61e1b8b05f4d",
-                                                                                           		"x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com"
-                                                                                           	}
-                                                                                           })
-                                                                                           .then(response => {
-                                                                                           	return response.json();
-                                                                                           	
-                                                                                           })
-                                                                                           .then(data => {
-                                                                                            document.getElementById("sno1").innerHTML = "1.";
-                                                                                            document.getElementById("name1").innerHTML = data.chart.result[0].meta.symbol;
-                                                                                           	document.getElementById("volume1").innerHTML = data.chart.result[0].indicators.quote[0].volume.reduce((a, b) => a + b, 0);
-                                                                                           	document.getElementById("open1").innerHTML = parseFloat(data.chart.result[0].indicators.quote[0].open[374]).toFixed(2);
-                                                                                           	document.getElementById("close1").innerHTML = parseFloat(data.chart.result[0].indicators.quote[0].close[374]).toFixed(2);
-                                                                                           	document.getElementById("high1").innerHTML = parseFloat(data.chart.result[0].indicators.quote[0].high[374]).toFixed(2);
-                                                                                           	document.getElementById("low1").innerHTML = parseFloat(data.chart.result[0].indicators.quote[0].low[374]).toFixed(2);
-	
-	
-                                                                                           	var close1 = data.chart.result[0].indicators.quote[0].close[374];
+	var close = data.prices[0].close;
 
-                                                                                           	var change1 = parseFloat(close1-yesterday_close1).toFixed(2);
-                                                                                           	if(change1 >= 0)
-                                                                                           	{  
-                                                                                           	   document.getElementById("change1").style.color = "green";
-                                                                                           	   document.getElementById("change1").innerHTML = change1 + "&#9650" ;
-                                                                                           	}
-                                                                                           	else
-                                                                                           	{
-	   
-                                                                                           	   document.getElementById("change1").style.color = "red";
-                                                                                           	   document.getElementById("change1").innerHTML = change1 + "&#9660" ;
-                                                                                           	}
-                                                                                           	console.log(data);
-                                                                                           	
-                                                                                           })
-                                                                                           .catch(err => {
-                                                                                           	console.error(err);
-                                                                                           });
-
-
-//{{{...................................................................................................................................................................................................................................................}}}
-                                            	
-												
-												
-												var yesterday_change1 = parseFloat(yesterday_close1-dayBeforeYesterday_close1).toFixed(2);
+    var change = parseFloat(close-yesterday_close).toFixed(2);
+    if(change >= 0)
+    {  
+        document.getElementById("change1").style.color = "green";
+        document.getElementById("change1").innerHTML = change + "&#9650" ;
+    }
+    else
+    {
+	    document.getElementById("change1").style.color = "red";
+        document.getElementById("change1").innerHTML = change + "&#9660" ;
+    }
 	
-	                                        	if(yesterday_change1 >= 0)
-	                                        	{  
-	                                        	   document.getElementById("yesterday_change1").style.color = "green";
-	                                        	   document.getElementById("yesterday_change1").innerHTML = yesterday_change1 + "&#9650" ;
-	                                        	}
-	                                        	else
-	                                        	{
-	   
-	                                        	   document.getElementById("yesterday_change1").style.color = "red";
-	                                        	   document.getElementById("yesterday_change1").innerHTML = yesterday_change1 + "&#9660" ;
-	                                        	}	
+	var yesterday_change = parseFloat(yesterday_close-dayBeforeYesterday_close).toFixed(2);
 	
-	                                        	console.log(data);
+	if(yesterday_change >= 0)
+	{  
+	    document.getElementById("yesterday_change1").style.color = "green";
+	    document.getElementById("yesterday_change1").innerHTML = yesterday_change + "&#9650" ;
+	}
+	else
+	{
 	
-                                        	})
-                                        	.catch(err => {
-                                        		console.error(err);
-                                        	});
-	
-	                                        	console.log(data);
-	
-                                        	})
-											
-											
-											
-//{{.....................................................................................................................................................................................................}}											
-											
+	    document.getElementById("yesterday_change1").style.color = "red";
+	    document.getElementById("yesterday_change1").innerHTML = yesterday_change + "&#9660" ;
+	}
+	  									
+})
 .catch(err => {
 	console.error(err);
 });
 
-//{.............................................................................................................................................................................}
 
 
 </script>
