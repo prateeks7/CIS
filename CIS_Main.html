@@ -10,15 +10,96 @@ var stock1 = localStorage.getItem("input1");
 
 
 //{.................................................................................................................day_before_yesterday..................................................................................................................}
-
-fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-historical-data?symbol="+stock1+"&region=IN", {
-	"method": "GET",
-	"headers": {
-		"x-rapidapi-key": "76f08c99bemsh726d64bdb524ae1p124b4cjsn61e1b8b05f4d",
-		"x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com"
+var xhttp = new XMLHttpRequest();
+xhttp.open("GET", "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-historical-data?symbol="+stock1+"&region=IN", true);
+xhttp.setRequestHeader('x-rapidapi-key' , '76f08c99bemsh726d64bdb524ae1p124b4cjsn61e1b8b05f4d')//,"x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com");
+xhttp.setRequestHeader('x-rapidapi-host', 'apidojo-yahoo-finance-v1.p.rapidapi.com');
+xhttp.send();
+//fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-historical-data?symbol="+stock1+"&region=IN", {
+//	"method": "GET",
+//	"headers": {
+//		"x-rapidapi-key": "76f08c99bemsh726d64bdb524ae1p124b4cjsn61e1b8b05f4d",
+//		"x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com"
+//	}
+//})
+xhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    var data = JSON.parse(this.responseText);
+	console.log(data);
+     
+	document.getElementById("dayBeforeYesterday_volume1").innerHTML = data.prices[2].volume;
+	document.getElementById("dayBeforeYesterday_open1").innerHTML = parseFloat(data.prices[2].open).toFixed(2);
+	document.getElementById("dayBeforeYesterday_close1").innerHTML = parseFloat(data.prices[2].close).toFixed(2);
+	document.getElementById("dayBeforeYesterday_high1").innerHTML = parseFloat(data.prices[2].high).toFixed(2);
+	document.getElementById("dayBeforeYesterday_low1").innerHTML = parseFloat(data.prices[2].low).toFixed(2);
+	
+	
+	document.getElementById("yesterday_volume1").innerHTML = data.prices[1].volume;
+    document.getElementById("yesterday_open1").innerHTML = parseFloat(data.prices[1].open).toFixed(2);
+    document.getElementById("yesterday_close1").innerHTML = parseFloat(data.prices[1].close).toFixed(2);
+    document.getElementById("yesterday_high1").innerHTML = parseFloat(data.prices[1].high).toFixed(2);
+    document.getElementById("yesterday_low1").innerHTML = parseFloat(data.prices[1].low).toFixed(2);
+	
+	
+	
+	document.getElementById("sno1").innerHTML = "1.";
+    document.getElementById("name1").innerHTML = stock1;
+    document.getElementById("volume1").innerHTML = data.prices[0].volume;
+    document.getElementById("open1").innerHTML = parseFloat(data.prices[0].open).toFixed(2);
+    document.getElementById("close1").innerHTML = parseFloat(data.prices[0].close).toFixed(2);
+    document.getElementById("high1").innerHTML = parseFloat(data.prices[0].high).toFixed(2);
+    document.getElementById("low1").innerHTML = parseFloat(data.prices[0].low).toFixed(2);
+	
+	
+	
+	var threeDaysBefore_close = data.prices[3].close;
+	var dayBeforeYesterday_close = data.prices[2].close;
+	var dayBeforeYesterday_change = parseFloat(dayBeforeYesterday_close-threeDaysBefore_close).toFixed(2);
+	if(dayBeforeYesterday_change >= 0)
+	{  
+	   
+	   document.getElementById("dayBeforeYesterday_row1").style.color = "green";
+	   document.getElementById("dayBeforeYesterday_change1").innerHTML = "+"+dayBeforeYesterday_change + "&#9650" ;
 	}
-})
-.then(response => {
+	else
+	{
+	   
+	   document.getElementById("dayBeforeYesterday_row1").style.color = "red";
+	   document.getElementById("dayBeforeYesterday_change1").innerHTML = dayBeforeYesterday_change + "&#9660" ;
+	}	
+	
+	var yesterday_close = data.prices[1].close;
+	
+	var close = data.prices[0].close;
+
+    var change = parseFloat(close-yesterday_close).toFixed(2);
+    if(change >= 0)
+    {  
+	    document.getElementById("row1").style.color = "green"; 
+        document.getElementById("change1").innerHTML = "+"+change + "&#9650" ;
+    }
+    else
+    {
+	    document.getElementById("row1").style.color = "red"; 
+        document.getElementById("change1").innerHTML = change + "&#9660" ;
+    }
+	
+	var yesterday_change = parseFloat(yesterday_close-dayBeforeYesterday_close).toFixed(2);
+	
+	if(yesterday_change >= 0)
+	{  
+	    document.getElementById("yesterday_row1").style.color = "green";
+	    document.getElementById("yesterday_change1").innerHTML = "+"+yesterday_change + "&#9650" ;
+	}
+	else
+	{
+	
+	    document.getElementById("yesterday_row1").style.color = "red";
+	    document.getElementById("yesterday_change1").innerHTML = yesterday_change + "&#9660" ;
+	}
+  }
+};
+/*.then(response => {
 	return response.json();
 	
 })
@@ -56,13 +137,14 @@ fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-historical-d
 	var dayBeforeYesterday_change = parseFloat(dayBeforeYesterday_close-threeDaysBefore_close).toFixed(2);
 	if(dayBeforeYesterday_change >= 0)
 	{  
-	   document.getElementById("dayBeforeYesterday_change1").style.color = "green";
+	   
+	   document.getElementById("dayBeforeYesterday_row1").style.color = "green";
 	   document.getElementById("dayBeforeYesterday_change1").innerHTML = dayBeforeYesterday_change + "&#9650" ;
 	}
 	else
 	{
 	   
-	   document.getElementById("dayBeforeYesterday_change1").style.color = "red";
+	   document.getElementById("dayBeforeYesterday_row1").style.color = "red";
 	   document.getElementById("dayBeforeYesterday_change1").innerHTML = dayBeforeYesterday_change + "&#9660" ;
 	}	
 	
@@ -73,12 +155,12 @@ fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-historical-d
     var change = parseFloat(close-yesterday_close).toFixed(2);
     if(change >= 0)
     {  
-        document.getElementById("change1").style.color = "green";
+	    document.getElementById("row1").style.color = "green"; 
         document.getElementById("change1").innerHTML = change + "&#9650" ;
     }
     else
     {
-	    document.getElementById("change1").style.color = "red";
+	    document.getElementById("row1").style.color = "red"; 
         document.getElementById("change1").innerHTML = change + "&#9660" ;
     }
 	
@@ -86,21 +168,29 @@ fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-historical-d
 	
 	if(yesterday_change >= 0)
 	{  
-	    document.getElementById("yesterday_change1").style.color = "green";
+	    document.getElementById("yesterday_row1").style.color = "green";
 	    document.getElementById("yesterday_change1").innerHTML = yesterday_change + "&#9650" ;
 	}
 	else
 	{
 	
-	    document.getElementById("yesterday_change1").style.color = "red";
+	    document.getElementById("yesterday_row1").style.color = "red";
 	    document.getElementById("yesterday_change1").innerHTML = yesterday_change + "&#9660" ;
 	}
 	  									
 })
 .catch(err => {
 	console.error(err);
-});
-
+});*/
+function show(){
+   if(document.getElementById("yesterday_row1").style.display == "none" && document.getElementById("dayBeforeYesterday_row1").style.display == "none"){
+    document.getElementById("dayBeforeYesterday_row1").style.display ="table-row";
+	document.getElementById("yesterday_row1").style.display = "table-row";}
+	else{
+	document.getElementById("dayBeforeYesterday_row1").style.display = "none";
+	document.getElementById("yesterday_row1").style.display = "none";
+	}
+}
 
 
 </script>
@@ -116,17 +206,17 @@ fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-historical-d
 <th>Low</th>
 <th>Inc/Dec</th>
 </tr>
-<tr>
+<tr id="row1" onclick="show();">
 <th id="sno1"></th>
-<th id="name1"></th>
+<th id="name1" ></th>
 <th id="volume1"></th>
 <th id="open1"></th>
 <th id="close1"></th>
 <th id="high1"></th>
 <th id="low1"></th>
-<th id="change1"></th>
+<th id="change1" style="background-color:white"></th>
 </tr>
-<tr>
+<tr id="yesterday_row1" style="display:none">
 <th style="border:0px"></th>
 <th style="border:0px"></th>
 <th id="yesterday_volume1"></th>
@@ -136,7 +226,7 @@ fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-historical-d
 <th id="yesterday_low1"></th>
 <th id="yesterday_change1"></th>
 </tr>
-<tr>
+<tr id="dayBeforeYesterday_row1" style="display:none">
 <th style="border:0px"></th>
 <th style="border:0px"></th>
 <th id="dayBeforeYesterday_volume1"></th>
@@ -146,6 +236,7 @@ fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-historical-d
 <th id="dayBeforeYesterday_low1"></th>
 <th id="dayBeforeYesterday_change1"></th>
 </tr>
+</span>
 </table>
 </div>
 </body>
